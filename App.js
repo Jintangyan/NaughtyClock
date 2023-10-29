@@ -1,60 +1,205 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+// / Imported from react mostyl hooks
+import { useState } from 'react';
 
-const App = () => {
-  const [alarms, setAlarms] = useState([
-    { id: '1', time: '07:00 AM' },
-    { id: '2', time: '08:30 AM' },
-  ]);
+// Imported from react-native components
+import { StyleSheet, Text, View, Image } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-  const addAlarm = () => {
-    // Logic to add a new alarm
-    // For simplicity, we'll add a dummy alarm here
-    const newAlarm = { id: Date.now().toString(), time: '09:00 AM' };
-    setAlarms((prevAlarms) => [...prevAlarms, newAlarm]);
-  };
+// Imported all screens for this app
+import  {HomeScreen}  from './screens/HomeScreen'
+import { SigninScreen } from './screens/SigninScreen'
+import { SignupScreen } from './screens/SignupScreen'
+import { SignoutButton } from './components/SignoutButton'
+
+// Firebase config
+import { firebaseConfig } from './config/config'
+import { initializeApp } from 'firebase/app'
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  query,
+  onSnapshot,
+  doc
+} from 'firebase/firestore'
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from 'firebase/auth'
+
+// Initialised the firebase app abd save reference
+const FBapp = initializeApp(firebaseConfig)
+
+// Initialised the firestore
+const db = getFirestore(FBapp)
+
+// Customised logo
+const LogoTitle = () => {
+  return (
+    <View style={styles.logoContainer}>
+      <Image
+        style={styles.logoImage}
+        source={require('./assets/logo.png')}
+      />
+      {/* <Text style = {styles.titleText}>Sign up</Text> */}
+    </View>
+
+  );
+}
+
+const Stack = createNativeStackNavigator()
+
+export default function App() {
+
+  // Store state of user
+  const [user, setUser] = useState()
+
+  // Store state of data
+  const [appData, setAppData] = useState()
+
+  // Verify user authentication
+  const register = (email, password) => {
+
+    createUserWithEmailAndPassword(authObj, email, password)
+      .then((userCredential) => {
+        setUser(userCredential.user)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  // Sign in function
+  const signin = (email, password) => {
+
+    signInWithEmailAndPassword(authObj, email, password)
+      .then((userCredential) => setUser(userCredential.user))
+      .catch((error) => console.log(error))
+  }
+
+  // Sign out function
+  const signout = () => {
+    signOut(authObj)
+      .then(() => setUser(null))
+      .catch((error) => console.log(error))
+  }
+
+  // Adding data/document to firestore
+  const addDataToFirestore = async (FScollection, data) => {
+    // add data to a collection with FS generated id
+    const ref = await addDoc(collection(db, FScollection), data)
+    return ref.id
+  }
+
+  // Get data/document from firestore
+  const getDataFromFirestore = (FScollection) => {
+    const FSquery = query(collection(db, FScollection))
+    const unsubscribe = onSnapshot(FSquery, (querySnapshot) => {
+      let FSdata = []
+      querySnapshot.forEach((doc) => {
+        let item = {}
+        item = doc.data()
+        item.id = doc.id
+        FSdata.push(item)
+      })
+      setAppData(FSdata)
+    })
+  }
+
+  // edit data to fiestore
+  const editDataToFirestore = async (FScollection, data,) => {
+
+    // edit data to a collection with FS generated id
+    const frankDocRef = doc(db, FScollection, data.id);
+    const ref = await updateDoc(frankDocRef, data)
+    console.log(ref.id)
+  }
+
+  // change status of data to firestore
+  const changeDataStatusToFirestore = async (FScollection, data) => {
+    // edit data to a collection with FS generated id
+    const frankDocRef = doc(db, FScollection, data.id);
+    const ref = await updateDoc(frankDocRef, data)
+  }
+
+  // check for changes which includes authentication of users and document availability
+  const authObj = getAuth()
+  onAuthStateChanged(authObj, (user) => {
+    if (user) {
+      setUser(user)
+      if (!appData) {
+        getDataFromFirestore(`users/${user.uid}/items`)
+      }
+    }
+    else {
+      setUser(null)
+    }
+  })
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={alarms}
-        renderItem={({ item }) => <Text style={styles.alarmTime}>{item.time}</Text>}
-        keyExtractor={(item) => item.id}
-      />
-      <TouchableOpacity style={styles.fab} onPress={addAlarm}>
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{
+        headerStyle: {
+          backgroundColor: '#94D1FA',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }} >
+
+        <Stack.Screen name="Signin" options={{
+          headerLeft: (props) => <LogoTitle {...props} />,
+          title: "Log in", headerTintColor: '#000'
+        }} >
+
+          {(props) => <SigninScreen {...props} signin={signin} auth={user} />}
+        </Stack.Screen>
+
+        <Stack.Screen name="Signup" options={{
+          headerLeft: (props) => <LogoTitle {...props} />,
+          title: "Sign up", headerTintColor: '#000'
+        }} >
+
+          {(props) => <SignupScreen {...props} signup={register} auth={user} />}
+        </Stack.Screen>
+        
+        <Stack.Screen name="Home" options={{
+          headerLeft: (props) => <LogoTitle {...props} />,
+          title: "Home", headerTintColor: '#000',
+          headerRight: (props) => <SignoutButton {...props} signout={signout} />,
+        }} >
+
+          {(props) => <HomeScreen {...props} auth={user} addDataToFirestore={addDataToFirestore} data={appData} getDataFromFirestore={getDataFromFirestore} changeDataStatusToFirestore={changeDataStatusToFirestore} />}
+        </Stack.Screen>
+
+        
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  alarmTime: {
-    fontSize: 24,
-    marginVertical: 10,
-    alignSelf: 'center',
-  },
-  fab: {
-    position: 'absolute',
-    width: 56,
-    height: 56,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 20,
-    top: 20,
-    backgroundColor: '#03A9F4',
-    borderRadius: 28,
-    elevation: 8,
-  },
-  fabText: {
-    fontSize: 48,
-    color: 'white',
-  },
-});
 
-export default App;
+  logoImage: {
+    width: 40,
+    height: 40,
+    marginRight: 5,
+    resizeMode: 'contain',
+  },
+
+  titleText: {
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 17,
+    marginStart: 60,
+  }
+
+});
