@@ -1,8 +1,10 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyDtPIARUSZEuid46jJPLavJRMCwSrxr_XI",
-    authDomain: "naughtyclock-15337.firebaseapp.com",
-    projectId: "naughtyclock-15337",
-    storageBucket: "naughtyclock-15337.appspot.com",
-    messagingSenderId: "318630885827",
-    appId: "1:318630885827:web:a0ab788b72729a616d6576"
+    
+  apiKey: "AIzaSyDLechfljW2T93UFNk-6ka9TXFmgn1Iun4",
+  authDomain: "naughtyclock-59e94.firebaseapp.com",
+  projectId: "naughtyclock-59e94",
+  storageBucket: "naughtyclock-59e94.appspot.com",
+  messagingSenderId: "202574805803",
+  appId: "1:202574805803:web:70647e49a15d9f3e78a36e",
+  measurementId: "G-PJF1ERV8CD"
   };

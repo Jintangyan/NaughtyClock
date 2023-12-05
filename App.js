@@ -11,6 +11,12 @@ import  {HomeScreen}  from './screens/HomeScreen'
 import { SigninScreen } from './screens/SigninScreen'
 import { SignupScreen } from './screens/SignupScreen'
 import { SignoutButton } from './components/SignoutButton'
+import { SettingScreen } from './screens/SettingScreen'
+import { AddAlarmScreen } from './screens/AddAlarmScreen'
+import { BarNavigator } from './components/BarNavigator'
+import { LogoTitle} from './components/LogoTitle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 // Firebase config
 import { firebaseConfig } from './config/config'
@@ -39,19 +45,6 @@ const FBapp = initializeApp(firebaseConfig)
 // Initialised the firestore
 const db = getFirestore(FBapp)
 
-// Customised logo
-const LogoTitle = () => {
-  return (
-    <View style={styles.logoContainer}>
-      <Image
-        style={styles.logoImage}
-        source={require('./assets/logo.png')}
-      />
-      {/* <Text style = {styles.titleText}>Sign up</Text> */}
-    </View>
-
-  );
-}
 
 const Stack = createNativeStackNavigator()
 
@@ -129,22 +122,40 @@ export default function App() {
   }
 
   // check for changes which includes authentication of users and document availability
-  const authObj = getAuth()
-  onAuthStateChanged(authObj, (user) => {
-    if (user) {
-      setUser(user)
-      if (!appData) {
-        getDataFromFirestore(`users/${user.uid}/items`)
+    const authObj = getAuth()
+   onAuthStateChanged(authObj, (user) => {
+   if (user) {
+       setUser(user)
+       AsyncStorage.setItem('user', JSON.stringify(user));
+       console.log(user.uid, 'user.uid')
+       if (!appData) {
+         getDataFromFirestore(`users/${user.uid}/alarmList`)
+   
+       }
       }
-    }
-    else {
-      setUser(null)
-    }
-  })
+     else {
+       setUser(null)
+     }
+   })
+//   const authObj = getAuth()
+//  onAuthStateChanged(authObj, (user) => {
+//      if (user) {
+//          setUser(user)
+//          if (!appData) {
+//              getAlarmsFromFirebase(user.uid).then(alarmList => {
+//                 
+//              });
+//         }     }
+//    else {
+//          setUser(null)
+//      }
+//  })
+
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
+         
         headerStyle: {
           backgroundColor: '#94D1FA',
         },
@@ -170,36 +181,78 @@ export default function App() {
           {(props) => <SignupScreen {...props} signup={register} auth={user} />}
         </Stack.Screen>
         
-        <Stack.Screen name="Home" options={{
-          headerLeft: (props) => <LogoTitle {...props} />,
-          title: "Home", headerTintColor: '#000',
+        {/* <Stack.Screen
+          name="Home"
+          component={BarNavigator}
+          options={({ route }) => ({  
+          headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitleAlign: 'center',
+          headerTintColor: '#000',
           headerRight: (props) => <SignoutButton {...props} signout={signout} />,
-        }} >
-
-          {(props) => <HomeScreen {...props} auth={user} addDataToFirestore={addDataToFirestore} data={appData} getDataFromFirestore={getDataFromFirestore} changeDataStatusToFirestore={changeDataStatusToFirestore} />}
+          headerLeft: () => (
+          <Text style={styles.titleText}>
+           {route.name}
+           </Text>
+           ),
+           })}> */}
+           <Stack.Screen
+            name="Home"
+            component={BarNavigator}
+            options={({ route }) => ({
+            headerLeft: () => <LogoTitle />,
+            headerRight: (props) => <SignoutButton {...props} signout={signout} />,
+            headerTitleAlign: 'center',
+            title: '',
+            headerTintColor: '#000'
+    })}
+>
+          {/* {(props) => <HomeScreen {...props} auth={user} addDataToFirestore={addDataToFirestore} data={appData} getDataFromFirestore={getDataFromFirestore} changeDataStatusToFirestore={changeDataStatusToFirestore} />} */}
         </Stack.Screen>
 
-        
+        {/* <Stack.Screen
+          name="AddAlarm"
+          component={AddAlarmScreen}
+          options={({ route }) => ({  
+          headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitleAlign: 'center',
+          headerTintColor: '#000',
+          headerRight: (props) => <SignoutButton {...props} signout={signout} />,
+          headerLeft: () => (
+          <Text style={styles.titleText}>
+           {route.name}
+           </Text>
+           ),
+           })}>
+          </Stack.Screen> */}
+          <Stack.Screen
+            name="AddAlarm"
+            component={AddAlarmScreen}
+            options={({ route }) => ({  
+                headerLeft: () => <LogoTitle />,
+                headerRight: (props) => <SignoutButton {...props} signout={signout} />,
+                headerTitleAlign: 'center',
+                headerTintColor: '#000',
+                title: '',
+    })}
+>
+</Stack.Screen>
 
       </Stack.Navigator>
+      
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
 
-  logoImage: {
-    width: 40,
-    height: 40,
-    marginRight: 5,
-    resizeMode: 'contain',
-  },
+  
 
   titleText: {
     fontWeight: 'bold',
     color: 'black',
     fontSize: 17,
-    marginStart: 60,
+    marginLeft: 15,
+   
   }
 
 });
