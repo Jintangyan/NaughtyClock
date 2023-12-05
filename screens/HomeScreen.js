@@ -234,7 +234,6 @@ export const HomeScreen = ({ route }) => {
   const renderAlarm = ({ item, index }) => (
     <TouchableOpacity style={styles.alarmItem} onPress={() => showPicker(item)}>
       <Text style={styles.alarmText}>{item.time}</Text>
-    
 
       <CustomSwitch
         value={item.isActive}
@@ -269,9 +268,7 @@ export const HomeScreen = ({ route }) => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => getAlarmsFromFirebase()}>
-        <Text>Refresh</Text>
-      </TouchableOpacity>
+    
       <SwipeFlatList
         data={alarms}
         keyExtrator={(item, index) => item.id}
@@ -283,6 +280,11 @@ export const HomeScreen = ({ route }) => {
         lineHeight={64}
         getItemLayout={_getItemLayout}
       />
+        <TouchableOpacity onPress={() => getAlarmsFromFirebase()}>
+          
+        <Text style={styles.refreshText}>REFRESH</Text>
+
+      </TouchableOpacity>
       <SelectTime
         modalVisible={modalVisible}
         seletedTime={new Date(date)}
@@ -320,5 +322,11 @@ const styles = StyleSheet.create({
   alarmText: {
     fontSize: 18,
     fontWeight: "500",
+  },
+  refreshText: {
+    marginHorizontal: 10, 
+    fontSize:15,
+    marginTop:10,
+    fontWeight:'bold',
   },
 });

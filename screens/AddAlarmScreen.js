@@ -105,12 +105,12 @@ export const AddAlarmScreen = ({ navigation }) => {
       <Text style={styles.alarmTimeText}>SET ALARM TIME </Text>
       
       <TouchableHighlight
-        style={styles.openButton}
+        style={styles.startButton}
         onPress={() => {
           setModalVisible(true);
         }}
       >
-        <Text style={styles.textStyle}>START</Text>
+        <Text style={styles.startText}>Start</Text>
       </TouchableHighlight>
 
       <SelectTime
@@ -121,7 +121,7 @@ export const AddAlarmScreen = ({ navigation }) => {
         onTimeChange={onTimeChange}
         resetSelectTime={() => setTime(new Date())}
       />
-      <Button title="Save Alarm" onPress={saveAlarm} />
+      {/* <Button title="Save Alarm" onPress={saveAlarm} /> */}
     </View>
   );
 };
@@ -207,6 +207,22 @@ const styles = StyleSheet.create({
   },
   openButton: {
     //  color: '#d1a853'
+  },
+  startButton:{
+    backgroundColor: '#94D1FA', 
+    padding: 20, 
+    borderRadius: 40, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    width: 80, 
+    height: 80, 
+    marginTop:20,
+
+  },
+  startText:{
+    color: 'white',
+    fontSize: 18, 
+    fontWeight:'bold',
   },
   textStyle: {
     color: "#d1a853",
