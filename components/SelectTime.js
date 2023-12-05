@@ -62,7 +62,7 @@ export const SelectTime = (props) => {
             
             <View style={styles.setting}>
               <Text style={styles.title}>Sound</Text>
-              <Text style={styles.title}>Silk {">"} </Text>
+              <Text style={styles.title}>Random {">"} </Text>
             </View>
           </View>
         </View>
