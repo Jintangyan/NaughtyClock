@@ -133,10 +133,11 @@ export const HomeScreen = ({ route }) => {
   }
 
   
-  const switchAlarm = (index) => {
+  const switchAlarm = async (index) => {
     const templist = cloneDeep(alarms);
     templist[index].isActive = !templist[index].isActive;
     setAlarms(templist);
+    updateAlarmItem(templist[index]);
   };
   const onHiddenAreaPressed = async item => {
     let users = await AsyncStorage.getItem("user");
@@ -190,6 +191,7 @@ export const HomeScreen = ({ route }) => {
                 await updateDoc(dc.ref, {
                   time: newData.time,
                   date: newData.date,
+                  isActive: newData.isActive
                 });
                 console.log("Item updated successfully!");
                 setModalVisible(false);

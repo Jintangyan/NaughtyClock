@@ -1,6 +1,8 @@
 
 import {useState, useEffect} from 'react'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Linking} from 'react-native'
 
@@ -53,24 +55,17 @@ useEffect( () => {
 
 
 
-// useEffect( () => {
-//   // auth is passed on as a prop from App.js
-//   if( props.auth ) {
-//     navigation.reset( { index: 0, routes: [ {name: "Home"}]})
-    
-//   }
-// }, [ props.auth ])
-
-
 // Same with signup
- const signIn = ( email, password ) => props.signin( email, password )
+const signIn = ( email, password ) => props.signin( email, password )
 
-useEffect( () => {
-  // auth is passed on as a prop from App.js
-  if( props.auth ) {
+ useEffect( () => {
+   // auth is passed on as a prop from App.js
+   if( props.auth ) {
     navigation.reset( { index: 0, routes: [ {name: "Home"} ]} )
-  }
-}, [ props.auth ])
+   }
+ }, [ props.auth ])
+
+
 
   return (
     <KeyboardAvoidingView style={styles.signInView} behavior='padding'>
@@ -83,7 +78,7 @@ useEffect( () => {
       <Text style = {styles.label}>Email</Text>
       <TextInput style = {styles.input}     
       onChangeText = { (value) => setEmail(value)}
-      placeholder="mitang@gmail.com"
+      placeholder="Mitang@gmail.com"
       placeholderTextColor = "darkgray"
       keyboardType="email-address"
       

@@ -1,15 +1,30 @@
 import React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { StyleSheet, Text, View, Image, } from 'react-native'
+import { StyleSheet, Text, View, Image,DeviceEventEmitter } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity, Alert, Modal, } from 'react-native'
 import { SafeAreaView, ScrollView } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  getAuth,
+  signOut,
+} from 'firebase/auth'
 
 // Components
-import { LogoTitle } from '../components/LogoTitle'
 
 
-export const SettingScreen = () => {
+
+export const SettingScreen = ({ x}) => {
+  const navigation = useNavigation();
+  const authObj = getAuth()
+  // Sign out function
+  const handleSignOut = () => {
+    navigation.navigate('Signin');
+    DeviceEventEmitter.emit("User.logout")
+
+  }
+
+ 
   return (
     <View style={styles.container}>
      
@@ -18,7 +33,9 @@ export const SettingScreen = () => {
         source={require('../assets/logo.png')} 
       />  
       <Text style={styles.textStyle}>Made by MiTang</Text>
-
+    <TouchableOpacity style={styles.button}  onPress={handleSignOut}>
+      <Text style={styles.buttonText }>SIGN OUT</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -36,6 +53,18 @@ const styles = StyleSheet.create({
     textStyle:{
       fontFamily: 'Noteworthy', 
       fontSize:20,
+      fontWeight:'bold',
+    },
+    button: {
+     
+      paddingHorizontal: 20, 
+      paddingVertical: 10, 
+      backgroundColor: '#313cdf', 
+      borderRadius: 5, 
+      marginTop:20,
+    },
+    buttonText: {
+      color: 'white', 
       fontWeight:'bold',
     },
 
