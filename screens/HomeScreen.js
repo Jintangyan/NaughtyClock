@@ -34,6 +34,7 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
+  setDoc,
   doc,
   updateDoc,
   arrayUnion,
@@ -106,10 +107,13 @@ export const HomeScreen = ({ route }) => {
         }
       }
       console.log(alarmList, "alarmList");
+      if (alarmList.length === 0) {
+        setAlarms([]);
+        return;
+      }
       const tempList = alarmList.sort((a, b) => {
-        const [hourA, minuteA, periodA] = a.time.match(/(\d+):(\d+) ([ap]m)/).slice(1);
-        const [hourB, minuteB, periodB] = b.time.match(/(\d+):(\d+) ([ap]m)/).slice(1);
-      
+        const [hourA, minuteA, periodA] = a.time.match(/(\d+):(\d+) ([ap]m)/)?.slice(1);
+        const [hourB, minuteB, periodB] = b.time.match(/(\d+):(\d+) ([ap]m)/)?.slice(1);
    
         if (periodA !== periodB) {
           return periodA.localeCompare(periodB);

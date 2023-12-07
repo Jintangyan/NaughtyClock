@@ -12,9 +12,7 @@ import {
 
 // Components
 
-
-
-export const SettingScreen = ({ x}) => {
+export const SettingScreen = ({ }) => {
   const navigation = useNavigation();
   const authObj = getAuth()
   // Sign out function

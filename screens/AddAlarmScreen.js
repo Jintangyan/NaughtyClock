@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   startText:{
     color: 'white',
-    fontSize: 18, 
+    fontSize: 17, 
     fontWeight:'bold',
   },
   textStyle: {

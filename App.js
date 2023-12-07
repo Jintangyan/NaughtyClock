@@ -28,7 +28,8 @@ import {
   updateDoc,
   query,
   onSnapshot,
-  doc
+  doc,
+  setDoc
 } from 'firebase/firestore'
 
 import {
@@ -45,7 +46,7 @@ const FBapp = initializeApp(firebaseConfig)
 // Initialised the firestore
 const db = getFirestore(FBapp)
 
-const authObj = getAuth();
+
 const Stack = createNativeStackNavigator()
 
 export default function App() {
@@ -71,12 +72,18 @@ export default function App() {
     createUserWithEmailAndPassword(authObj, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
-        addDoc(collection(db, 'users'), { alarmList: [] });
-
+       
+        addUserInfo(userCredential.user.uid)
+        
       })
       .catch((error) => {
         console.log(error)
       })
+  }
+  
+  const addUserInfo = async id => {
+   
+    await setDoc(doc(db, 'users', id), {});
   }
 
   // Sign in function
