@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image,DeviceEventEmitter } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity} from 'react-native'
 import {
@@ -14,10 +14,13 @@ export const SettingScreen = ({ }) => {
   
   // Sign out function
   const handleSignOut = () => {
-    navigation.navigate('Signin');
-    DeviceEventEmitter.emit("User.logout")
-
-  }
+    signOut(authObj).then(() => {
+        navigation.navigate('Signin');
+    }).catch((error) => {
+       
+        console.log('Logout error', error);
+    });
+};
 
  
   return (
