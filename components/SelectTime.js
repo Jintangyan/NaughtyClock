@@ -1,32 +1,26 @@
 import React from "react";
-import { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  Button,
-  Platform,
-  FlatList,
   Dimensions,
-  Alert,
   Modal,
-  TouchableOpacity,
   TouchableHighlight,
-  DeviceEventEmitter,
 } from "react-native";
 import DatePicker from 'react-native-date-picker'
+
 export const SelectTime = (props) => {
   const { modalVisible, setModalVisible, seletedTime, saveAlarm, onTimeChange, resetSelectTime } = props;
   console.log(seletedTime, 'seletedTime')
   return (
     <View style={styles.centeredView}>
+
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          
-          setModalVisible(false);
+        setModalVisible(false);
         }}
       >
         <View style={styles.content}>
@@ -95,7 +89,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
       },
       openButton: {
-        //  color: '#d1a853'
        
       },
       textStyle: {
@@ -115,7 +108,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
       },
       setting: {
-        // marginTop: 20,
         width: Dimensions.get("window").width - 32,
         flexDirection: "row",
         paddingHorizontal: 16,
@@ -140,17 +132,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
       },
       modalView1: {
-        // backgroundColor: "red",
         position: "absolute",
         bottom: 0,
         width: Dimensions.get("window").width,
         height: 400,
         alignItems: "center",
         justifyContent: "center",
-        // margin: 20,
         backgroundColor: "white",
         borderRadius: 20,
-        // padding: 35,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

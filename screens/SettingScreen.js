@@ -1,20 +1,17 @@
 import React from 'react';
-import { useState, useEffect, useRef, useCallback } from 'react'
 import { StyleSheet, Text, View, Image,DeviceEventEmitter } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { TouchableOpacity, Alert, Modal, } from 'react-native'
-import { SafeAreaView, ScrollView } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TouchableOpacity} from 'react-native'
 import {
   getAuth,
   signOut,
 } from 'firebase/auth'
 
 // Components
-
 export const SettingScreen = ({ }) => {
   const navigation = useNavigation();
   const authObj = getAuth()
+  
   // Sign out function
   const handleSignOut = () => {
     navigation.navigate('Signin');

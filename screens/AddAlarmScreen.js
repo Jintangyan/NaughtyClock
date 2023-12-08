@@ -4,30 +4,20 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  Platform,
-  FlatList,
   Dimensions,
-  Alert,
-  Modal,
-  TouchableOpacity,
   TouchableHighlight,
   DeviceEventEmitter,
 } from "react-native";
-//import DateTimePicker from '@react-native-community/datetimepicker'
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView, ScrollView } from "react-native";
-import DatePicker from "react-native-date-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// Components
-import { ListSeparator } from "../components/ListSeparator";
 
+// Components
 import { SelectTime } from "../components/SelectTime";
 
 // Firebase config
 import { firebaseConfig } from "../config/config";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs } from "@firebase/firestore";
+
 // Initialised the firebase app abd save reference
 const FBapp = initializeApp(firebaseConfig);
 // Initialised the firestore
@@ -35,14 +25,11 @@ const db = getFirestore(FBapp);
 
 
 export const formatISODateToTimeString = (isoDateString) => {
+
   const date = new Date(isoDateString);
-  
   const hours = date.getHours();
   const minutes = date.getMinutes();
-  
   const formattedHours = hours % 12 || 12;
-
-
   const ampm = hours >= 12 ? "pm" : "am";
   
   const timeString = `${formattedHours}:${
@@ -121,25 +108,19 @@ export const AddAlarmScreen = ({ navigation }) => {
         onTimeChange={onTimeChange}
         resetSelectTime={() => setTime(new Date())}
       />
-      {/* <Button title="Save Alarm" onPress={saveAlarm} /> */}
+     
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
+  
   container: {
     paddingTop: 200,
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    // justifyContent: "center",
     position: "relative",
-    // backgroundColor: 'red',
     height: Dimensions.get("window").height,
   },
   DatePicker: {
@@ -166,17 +147,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   modalView1: {
-    // backgroundColor: "red",
     position: "absolute",
     bottom: 0,
     width: Dimensions.get("window").width,
     height: 400,
     alignItems: "center",
     justifyContent: "center",
-    // margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    // padding: 35,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -206,7 +184,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   openButton: {
-    //  color: '#d1a853'
   },
   startButton:{
     backgroundColor: '#94D1FA', 
@@ -240,7 +217,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   setting: {
-    // marginTop: 20,
     width: Dimensions.get("window").width - 32,
     flexDirection: "row",
     paddingHorizontal: 16,

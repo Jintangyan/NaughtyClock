@@ -18,9 +18,6 @@ const styles = StyleSheet.create({
         height: 50,
       },
       logoContainer: {
-        // flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         alignItems: 'flex-start',
       },
   })

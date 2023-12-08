@@ -2,15 +2,13 @@
 import { useState,useEffect } from 'react';
 
 // Imported from react-native components
-import { StyleSheet, Text, View, Image,DeviceEventEmitter } from 'react-native'
+import { StyleSheet,DeviceEventEmitter } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // Imported all screens for this app
-import  {HomeScreen}  from './screens/HomeScreen'
 import { SigninScreen } from './screens/SigninScreen'
 import { SignupScreen } from './screens/SignupScreen'
-import { SignoutButton } from './components/SignoutButton'
 import { SettingScreen } from './screens/SettingScreen'
 import { AddAlarmScreen } from './screens/AddAlarmScreen'
 import { BarNavigator } from './components/BarNavigator'
@@ -94,12 +92,6 @@ export default function App() {
       .catch((error) => console.log(error))
   }
 
-  // Sign out function
-  // const signout = () => {
-  //   signOut(authObj)
-  //     .then(() => setUser(null))
-  //     .catch((error) => console.log(error))
-  // }
   const signout = () => {
     signOut(authObj)
       .then(() => {
@@ -108,13 +100,7 @@ export default function App() {
       })
       .catch((error) => console.log("Sign out error:", error));
   };
-  // Adding data/document to firestore
-  const addDataToFirestore = async (FScollection, data) => {
-    // add data to a collection with FS generated id
-    const ref = await addDoc(collection(db, FScollection), data)
-    return ref.id
-  }
-
+  
   // Get data/document from firestore
   const getDataFromFirestore = (FScollection) => {
     const FSquery = query(collection(db, FScollection))
@@ -130,21 +116,6 @@ export default function App() {
     })
   }
 
-  // edit data to fiestore
-  const editDataToFirestore = async (FScollection, data,) => {
-
-    // edit data to a collection with FS generated id
-    const frankDocRef = doc(db, FScollection, data.id);
-    const ref = await updateDoc(frankDocRef, data)
-    console.log(ref.id)
-  }
-
-  // change status of data to firestore
-  const changeDataStatusToFirestore = async (FScollection, data) => {
-    // edit data to a collection with FS generated id
-    const frankDocRef = doc(db, FScollection, data.id);
-    const ref = await updateDoc(frankDocRef, data)
-  }
 
   // check for changes which includes authentication of users and document availability
     const authObj = getAuth()
@@ -202,10 +173,8 @@ export default function App() {
             title: '',
     })}
 >
-          {/* {(props) => <HomeScreen {...props} auth={user} addDataToFirestore={addDataToFirestore} data={appData} getDataFromFirestore={getDataFromFirestore} changeDataStatusToFirestore={changeDataStatusToFirestore} />} */}
+        
         </Stack.Screen>
-
-       
           <Stack.Screen
             name="AddAlarm"
             component={AddAlarmScreen}
@@ -223,9 +192,7 @@ export default function App() {
           {(props) => <SettingScreen {...props} signout={signout} auth={user} />}
         </Stack.Screen>
 
-      </Stack.Navigator>
-      
-      
+      </Stack.Navigator>  
     </NavigationContainer>
   );
 }

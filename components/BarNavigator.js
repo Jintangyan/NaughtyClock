@@ -1,6 +1,6 @@
 // BarNavigator.js
 import React from 'react'
-import { View, Text, StyleSheet,Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { HomeScreen } from '../screens/HomeScreen'
 import { AddAlarmScreen } from '../screens/AddAlarmScreen'
@@ -26,16 +26,6 @@ export const BarNavigator = () => {
           const iconSize = focused ? 35 : 30;
           return <AntDesign name={iconName} size={iconSize} color={color} />;
         },
-        // headerShown: false,
-        // tabBarActiveTintColor: "#313cdf",
-        // tabBarInactiveTintColor: 'gray',
-        // tabBarShowLabel: false, 
-        // tabBarStyle: styles.navBackground, 
-        // headerStyle: styles.header,
-        // headerTintColor: 'black',
-        // headerTitleStyle: styles.headerTitle,
-        // headerLeft: () => <Text style={styles.headerLeft}>{route.name}</Text>,
-        // headerLeft: null,
         
       })}
     >

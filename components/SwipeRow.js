@@ -4,9 +4,6 @@ import {
   Animated,
   PanResponder,
   TouchableOpacity,
-  ViewStyle,
-  GestureResponderEvent,
-  PanResponderGestureState,
 } from 'react-native';
 
 export class SwipeRow extends PureComponent{
@@ -66,7 +63,7 @@ export class SwipeRow extends PureComponent{
     ) {
       if (absDy > absDx) {
         return;
-      } // moving vertically
+      } 
 
     
       if (dx > 0) {

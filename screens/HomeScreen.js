@@ -4,25 +4,21 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   Dimensions,
   DeviceEventEmitter,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity, Alert, Modal } from "react-native";
-import { SafeAreaView, ScrollView } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
+
 
 // Components
-import { ListSeparator } from "../components/ListSeparator";
 import { CustomSwitch, Switch } from "../components/CustomSwitch";
 import { SwipeFlatList } from "../components/SwipeFlatList";
-import { SwipeRow } from "../components/SwipeRow";
 import { cloneDeep } from "lodash";
 import { SelectTime } from "../components/SelectTime";
 import { formatISODateToTimeString } from "./AddAlarmScreen";
+
 // External Lib
-import Storage from "react-native-storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Firebase config
@@ -37,7 +33,6 @@ import {
   setDoc,
   doc,
   updateDoc,
-  arrayUnion,
 } from "@firebase/firestore";
 import { getAuth } from "firebase/auth";
 
@@ -49,9 +44,6 @@ const auth = getAuth(FBapp);
 
 
 
-
-// console.log("Firestore connected", db);
-
 export const HomeScreen = ({ route }) => {
   const navigation = useNavigation();
 
@@ -60,12 +52,7 @@ export const HomeScreen = ({ route }) => {
   const [time, setTime] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [updateItem, setUpdateItem] = useState({});
-  // const fetchData = async () => {
-  //   const dataFromFirebase = await getAlarmsFromFirebase();
-  //   console.log( dataFromFirebase, 'dataFromFirebase')
-  //   // const temp = dataFromFirebase
-  //   setAlarms(dataFromFirebase);
-  // };
+
   useEffect(() => {
     const listeners = [
       DeviceEventEmitter.addListener("List.refresh", getAlarmsFromFirebase),
@@ -76,12 +63,8 @@ export const HomeScreen = ({ route }) => {
   }, []);
   
   useEffect(() => {
-  
-    // getAlarmList()
-
     getAlarmsFromFirebase();
   }, []);
-  // xxxx
 
   
   async function getAlarmsFromFirebase() {
@@ -127,9 +110,9 @@ export const HomeScreen = ({ route }) => {
         return parseInt(minuteA) - parseInt(minuteB);
       });
       console.log(tempList, 'templist')
-      // const tempList = cloneDeep(alarmList)
+    
       setAlarms(tempList);
-      // return alarmList;
+  
     } catch (error) {
       console.error("Error getting alarm list: ", error);
       return [];
@@ -203,7 +186,7 @@ export const HomeScreen = ({ route }) => {
               }
               
             }
-            // getAlarmsFromFirebase();
+
           }
         }
       }
@@ -236,7 +219,7 @@ export const HomeScreen = ({ route }) => {
     console.log(item, "itttt");
     setUpdateItem(item);
   };
-  // onPress={() => showPicker(item)}
+
   const renderAlarm = ({ item, index }) => (
     <TouchableOpacity style={styles.alarmItem} onPress={() => showPicker(item)}>
       <Text style={styles.alarmText}>{item.time}</Text>
@@ -268,7 +251,7 @@ export const HomeScreen = ({ route }) => {
   const _getItemLayout = (item, index) => {
     return {
       length: 60,
-      offset: 60 * index + 40, // ListHeaderComponent.height
+      offset: 60 * index + 40, 
       index,
     };
   };
@@ -308,13 +291,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#F3F5FA",
-    // backgroundColor: 'red',
+  
     alignItems: "center",
-    // paddingHorizontal: 20,
+
     paddingTop: 0,
   },
   alarmItem: {
-    // width: '100%',
+
     width: Dimensions.get("window").width,
     height: 64,
     justifyContent: "space-between",
@@ -322,7 +305,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 16,
     marginBottom: 30,
-    //borderRadius: 8,
+
     backgroundColor: "#fff",
   },
   alarmText: {

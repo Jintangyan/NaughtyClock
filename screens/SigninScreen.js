@@ -1,12 +1,7 @@
 
 import {useState, useEffect} from 'react'
 import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Linking} from 'react-native'
-
-import { HomeScreen } from './HomeScreen'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
 
 export function SigninScreen( props ) {
 
@@ -42,7 +37,7 @@ const validatePassword = (passwordStr) => {
 }
 
 useEffect( () => {
-  // console.log( validateEmail( email ) )
+ 
   if ( validateEmail( email ) ) {
     setValidEmail( true )
   }

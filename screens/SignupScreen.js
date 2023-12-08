@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
+
 
 
 export function SignupScreen( props ) {
@@ -151,7 +150,6 @@ const styles = StyleSheet.create( {
 
 
   buttonContainer: {
-    // backgroundColor: 'gray',
     width: 300,
     padding: 5,
     marginBottom: 5,

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FlatList, Dimensions } from 'react-native';
 import { SwipeRow } from './SwipeRow';
 import { View } from 'react-native';
-import { Text, StyleSheet } from 'react-native'
 
 
 export class SwipeFlatList extends Component{
@@ -29,7 +28,6 @@ export class SwipeFlatList extends Component{
   _onTouchStart = (item) => {
     const touchedRow = this.rowMap.get(item);
     if (!this.currentRow) this.currentRow = touchedRow;
-    //当其他行接管触摸事件,关闭已打开的行
     else if (this.currentRow !== touchedRow) {
       this.currentRow.closeRow();
       this.currentRow = touchedRow;
@@ -49,7 +47,6 @@ export class SwipeFlatList extends Component{
         rightContent={_rightContent}
         rightContentWidth={this.props.hiddenItemWidth}
         key={_key}
-        // ref={onGetRef}
         onDelete={onRightPress}
         lineHeight={this.props.lineHeight}
         onTouchStart={onTouchStart}>
