@@ -94,21 +94,28 @@ export const HomeScreen = ({ route }) => {
         setAlarms([]);
         return;
       }
+
       const tempList = alarmList.sort((a, b) => {
+        const convertTo24Hour = (time, period) => {
+            let [hour, minute] = time.split(':').map(Number);
+            if (period === 'pm' && hour !== 12) {
+                hour += 12;
+            } else if (period === 'am' && hour === 12) {
+                hour = 0;
+            }
+            return hour * 60 + minute; 
+        };
+    
         const [hourA, minuteA, periodA] = a.time.match(/(\d+):(\d+) ([ap]m)/)?.slice(1);
         const [hourB, minuteB, periodB] = b.time.match(/(\d+):(\d+) ([ap]m)/)?.slice(1);
-   
-        if (periodA !== periodB) {
-          return periodA.localeCompare(periodB);
-        }
-      
-        
-        if (parseInt(hourA) !== parseInt(hourB)) {
-          return parseInt(hourA) - parseInt(hourB);
-        }
-      
-        return parseInt(minuteA) - parseInt(minuteB);
-      });
+    
+        const timeA = convertTo24Hour(`${hourA}:${minuteA}`, periodA);
+        const timeB = convertTo24Hour(`${hourB}:${minuteB}`, periodB);
+    
+        return timeA - timeB;
+    });
+
+
       console.log(tempList, 'templist')
     
       setAlarms(tempList);
@@ -126,6 +133,8 @@ export const HomeScreen = ({ route }) => {
     setAlarms(templist);
     updateAlarmItem(templist[index]);
   };
+
+
   const onHiddenAreaPressed = async item => {
     let users = await AsyncStorage.getItem("user");
     users = JSON.parse(users);
